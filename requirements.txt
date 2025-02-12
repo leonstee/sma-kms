@@ -1,0 +1,11 @@
+langchain_qdrant
+langchain_ollama
+langchain_unstructured
+ollama
+qdrant_client
+langchain
+langchain_community
+gradio
+unstructured
+unstructured[pdf]
+dotenv
