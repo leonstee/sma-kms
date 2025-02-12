@@ -69,18 +69,25 @@ ollama = Client(host=getenv("OLLAMA_HOST"))
 # LM gibt Antwort zurück
 # History/Verlauf wird derzeit nicht genutzt
 def get_llm_response(query, history=None):
-
     chunks = get_chunks_for_llm(query)
-    prompt = ("Du bist ein Assistent rund um Fragen zu IT-Sicherheit und IT-Grundschutz."
+    prompt = (("Du bist ein Assistent rund um Fragen zu IT-Sicherheit und IT-Grundschutz."
               "Du beantwortest Fragen auf Basis von Dokumenten, die dir in der Anfrage zur Verfügung gestellt werden."
               "Für jedes Dokument, das du zur Erstellung der Antwort verwendest, gibst du die Quelle und Seite an."
               "Falls du auf Basis der Dokumente keine Antwort finden kannst, gib einfach 'null' aus. Versuche nicht, die Frage ohne die Dokumente zu beantworten.\n\n"
-              "Es wurde folgende Frage gestellt: ") + query + "\n\n Du Du hast folgende Dokumente zur Verfügung, um eine Antwort zu geben. Gib dabei auch die Quelle und die Seite der von dir in der Antwort verwendeten Dokumente an.\n\n"+chunks
-    response = ollama.generate(
-        model=getenv("LM_MODEL"),
-        prompt=prompt)
-    return response['response']
+              "Es wurde folgende Frage gestellt: ") + query +
+              "\n\n Du hast folgende Dokumente zur Verfügung, um eine Antwort zu geben. "
+              "Gib dabei auch die Quelle und die Seite der von dir in der "
+              "Antwort verwendeten Dokumente an.\n\n" + chunks)
 
+    client = Client()
+    response_stream = client.chat(
+        model=getenv("LM_MODEL"),
+        messages=[{"role": "user", "content": prompt}],
+        stream=True
+    )
+
+    for chunk in response_stream:
+        yield chunk['message']['content']
 
 
 
