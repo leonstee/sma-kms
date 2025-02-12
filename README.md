@@ -53,13 +53,13 @@ Dadurch wird die Benutzeroberfläche von SMA-KMS gestartet.
 ## Was funktioniert aktuell?
 
 - Der Chat funktioniert bereits.
+- Antworten werden als Stream ausgegeben
 - Die Zitatfunktion ist implementiert, aber die Ergebnisse sind noch nicht perfekt. Bei passender Formulierung sind sie jedoch brauchbar.
 - Grundlegendes Einlesen einer Datei
 
 ## Was gibt es noch zu tun?
 
 - Chat History / Verlauf implementieren.
-- Antworten als Stream ausgeben.
 - Prompt für Antworten & Zitate anpassen.
 - Eventuell die Erstellung der Datenbank-Queries mit einem extra Language Model (LM) umsetzen.
 - Optimierung des Einleseprozesses für größere Datenmengen
