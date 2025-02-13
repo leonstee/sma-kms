@@ -8,17 +8,17 @@ from dotenv import load_dotenv
 from os import getenv
 
 # Zotero DB und Speicherpfad anpassen
-ZOTERO_DB_PATH = os.path.expanduser(r'C:\Users\ehler\Zotero\zotero.sqlite')
-ZOTERO_STORAGE_FOLDER = r'C:\Users\ehler\Zotero\storage'
-LOCAL_PDF_FOLDER = r'C:\Users\ehler\PycharmProjects\sma-kms'
-OBSIDIAN_MD_FOLDER = r'C:\Users\ehler\Documents\Hochschule Mannheim\Semester3\SMA\SMA'
+ZOTERO_DB_PATH = os.path.expanduser(r'C:\Users\ehler\Zotero\zotero.sqlite')  # Pfad zur Zotero-Datenbank
+ZOTERO_STORAGE_FOLDER = r'C:\Users\ehler\Zotero\storage'  # Speicherort der Zotero-Daten
+LOCAL_PDF_FOLDER = r'C:\Users\ehler\PycharmProjects\sma-kms'  # Lokales Verzeichnis für PDFs
+OBSIDIAN_MD_FOLDER = r'C:\Users\ehler\Documents\Hochschule Mannheim\Semester3\SMA\SMA'  # Obsidian-Ordner
 
-load_dotenv()
-embed_model = OllamaEmbeddings(model=getenv("EMBEDDING_MODEL"))
+load_dotenv()  # Lädt Umgebungsvariablen aus einer .env-Datei
+embed_model = OllamaEmbeddings(model=getenv("EMBEDDING_MODEL"))  # Initialisiert das Embedding-Modell
 
 # Funktion, um Zotero-PDFs zu extrahieren
 def get_zotero_pdfs():
-    conn = sqlite3.connect(ZOTERO_DB_PATH)
+    conn = sqlite3.connect(ZOTERO_DB_PATH)  # Verbindung zur Zotero-Datenbank
     cursor = conn.cursor()
 
     # Hole die Dateipfade und ihre itemIDs für PDF-Dateien
@@ -44,8 +44,8 @@ def get_zotero_pdfs():
                         print(f"Datei nicht gefunden: {full_file_path}")
                     break  # Wenn die Datei gefunden wurde, beende die Schleife
 
-    conn.close()
-    return pdfs
+    conn.close()  # Schließe die Verbindung zur Datenbank
+    return pdfs  # Rückgabe der gefundenen PDF-Dateien
 
 # Funktion, um lokale PDFs zu extrahieren
 def get_local_pdfs():
@@ -53,10 +53,10 @@ def get_local_pdfs():
     # Durchsuche den angegebenen Ordner nach PDFs
     for root, dirs, files in os.walk(LOCAL_PDF_FOLDER):
         for file in files:
-            if file.lower().endswith(".pdf"):
+            if file.lower().endswith(".pdf"):  # Überprüfen, ob es sich um eine PDF handelt
                 full_file_path = os.path.join(root, file)
                 pdfs.append(full_file_path)
-    return pdfs
+    return pdfs  # Rückgabe der gefundenen lokalen PDF-Dateien
 
 
 def get_obsidian_md_files():
@@ -64,41 +64,41 @@ def get_obsidian_md_files():
     # Durchsuche den angegebenen Ordner nach Markdown-Dateien
     for root, dirs, files in os.walk(OBSIDIAN_MD_FOLDER):
         for file in files:
-            if file.lower().endswith(".md"):
+            if file.lower().endswith(".md"):  # Überprüfen, ob es sich um eine Markdown-Datei handelt
                 full_file_path = os.path.join(root, file)
                 md_files.append(full_file_path)
-    return md_files
+    return md_files  # Rückgabe der gefundenen Obsidian-Markdown-Dateien
 
-# Load and chunk the file
+# Lade und chunk die Datei
 def load_and_chunk(file_path):
     try:
         unstructured_loader = UnstructuredLoader(
-            file_path=file_path,
-            chunking_strategy="by_title",
-            max_characters=1200,
-            new_after_n_chars=500,
-            overlap=120,
-            include_orig_elements=False,
+            file_path=file_path,  # Pfad zur Datei
+            chunking_strategy="by_title",  # Chunking-Strategie (nach Titel)
+            max_characters=1200,  # Maximale Anzahl von Zeichen pro Chunk
+            new_after_n_chars=500,  # Neuer Chunk nach 500 Zeichen
+            overlap=120,  # Überlappung von 120 Zeichen zwischen Chunks
+            include_orig_elements=False,  # Die Originalelemente werden nicht mit einbezogen
         )
-        unstructured_docs = unstructured_loader.load()
-        return unstructured_docs
+        unstructured_docs = unstructured_loader.load()  # Lade und chunk die Datei
+        return unstructured_docs  # Rückgabe der gechunkten Dokumente
     except Exception as e:
-        print(f"Error loading and chunking file: {e}")
+        print(f"Error loading and chunking file: {e}")  # Fehlerbehandlung
         return None
 
-# Save chunked file to Vector Store
+# Speichern der gechunkten Datei im Vector Store
 def save_to_vectorstore(docs):
     try:
-        url = getenv("QDRANT_URL")
+        url = getenv("QDRANT_URL")  # URL für den Qdrant Vector Store
         unstructured_chunk_vectorstore = QdrantVectorStore.from_documents(
-            docs,
-            embed_model,
-            url=url,
-            prefer_grpc=False,
-            collection_name=getenv("QDRANT_COLLECTION"),
+            docs,  # Gechunkte Dokumente
+            embed_model,  # Das Embedding-Modell
+            url=url,  # URL des Vector Stores
+            prefer_grpc=False,  # Verwendung von gRPC
+            collection_name=getenv("QDRANT_COLLECTION"),  # Sammlung im Vector Store
         )
     except Exception as e:
-        print(f"Error saving to vectorstore: {e}")
+        print(f"Error saving to vectorstore: {e}")  # Fehlerbehandlung
 
 # Lade und verarbeite Zotero-, Obsidian und lokale PDFs
 def load_ALL_data_and_save_to_vectorstore():
@@ -113,9 +113,9 @@ def load_ALL_data_and_save_to_vectorstore():
     # Lade und chunk die Dateien
     all_documents = []
     for file in all_files:
-        print(f"Loading and chunking file: {file}")
+        print(f"Loading and chunking file: {file}")  # Zeige an, welche Datei geladen wird
         docs = load_and_chunk(file)
-        if docs:
+        if docs:  # Wenn Dokumente erfolgreich gechunked wurden
             all_documents.extend(docs)
 
     # Wenn keine Dokumente gefunden wurden
@@ -130,5 +130,5 @@ def load_ALL_data_and_save_to_vectorstore():
 # Hauptteil des Programms
 if __name__ == "__main__":
     print("Loading Zotero and local PDFs and saving to vectorstore...")
-    load_ALL_data_and_save_to_vectorstore()
+    load_ALL_data_and_save_to_vectorstore()  # Lade alle Daten und speichere sie im Vector Store
     print("Done!")
