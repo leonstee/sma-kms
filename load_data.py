@@ -86,18 +86,25 @@ def load_and_chunk(file_path):
         print(f"Error loading and chunking file: {e}")  # Fehlerbehandlung
         return None
 
-def save_to_vectorstore(docs):
+
+def save_to_vectorstore(docs, file_path=None):  # file_path als optionales Argument hinzufügen
     try:
         url = getenv("QDRANT_URL")
-        # Dokumente mit einer Priorität versehen
+
+        # Dokumente mit einer Priorität versehen und ggf. Dateipfad in Metadaten speichern
         prioritized_docs = []
         for doc in docs:
             if 'zotero' in doc.metadata.get('source', '').lower():
                 doc.metadata['priority'] = 1  # Höchste Priorität für Zotero
             elif 'obsidian' in doc.metadata.get('source', '').lower():
-                doc.metadata['priority'] = 2  # Mittel Priorität für Obsidian
+                doc.metadata['priority'] = 2  # Mittlere Priorität für Obsidian
             else:
                 doc.metadata['priority'] = 3  # Niedrigere Priorität für lokale PDFs
+
+            # Falls `file_path` vorhanden ist, in den Metadaten speichern
+            if file_path:
+                doc.metadata["file_path"] = file_path
+
             prioritized_docs.append(doc)
 
         # Vector Store mit den priorisierten Dokumenten erstellen
@@ -113,7 +120,7 @@ def save_to_vectorstore(docs):
 
 
 # Lade und verarbeite Zotero-, Obsidian und lokale PDFs
-def load_ALL_data_and_save_to_vectorstore():
+def load_all_data_and_save_to_vectorstore():
     # Hole Zotero-PDFs und lokale PDFs
     zotero_pdfs = get_zotero_pdfs()
     local_pdfs = get_local_pdfs()
@@ -142,5 +149,5 @@ def load_ALL_data_and_save_to_vectorstore():
 # Hauptteil des Programms
 if __name__ == "__main__":
     print("Loading Zotero and local PDFs and saving to vectorstore...")
-    load_ALL_data_and_save_to_vectorstore()  # Lade alle Daten und speichere sie im Vector Store
+    load_all_data_and_save_to_vectorstore()  # Lade alle Daten und speichere sie im Vector Store
     print("Done!")
