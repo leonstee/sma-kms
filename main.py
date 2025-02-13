@@ -29,9 +29,9 @@ unstructured_chunk_retriever = unstructured_chunk_vectorstore.as_retriever(searc
 
 
 def custom_priority_retriever(query, k=5):
-    results = unstructured_chunk_retriever.invoke(query)
+    results = compression_unstructured_retriever.invoke(query)
 
-    # Sortiere die Ergebnisse nach Priorität (Zotero hat die höchste Priorität)
+    # Sortiere die Ergebnisse nach Priorität
     sorted_results = sorted(results, key=lambda doc: doc.metadata.get('priority', 999))
 
     # Wähle die Top-k Ergebnisse nach Priorität
@@ -93,7 +93,7 @@ def get_llm_response(query, history=None):
     prompt = (("Du bist ein Assistent rund um Fragen zu IT-Sicherheit und IT-Grundschutz."
               "Du beantwortest Fragen auf Basis von Dokumenten, die dir in der Anfrage zur Verfügung gestellt werden."
               "Für jedes Dokument, das du zur Erstellung der Antwort verwendest, gibst du die Quelle und Seite an."
-              "Falls du auf Basis der Dokumente keine Antwort finden kannst, gib einfach 'null' aus. Versuche nicht, die Frage ohne die Dokumente zu beantworten.\n\n"
+              "Falls du auf Basis der Dokumente keine Antwort finden kannst, gib exakt folgenden Satz aus: Leider finde ich dazu keine Infos aus den gegebene Dokumenten.\n\n"
               "Hier ist eine beispielhafte Antwort, auf die Frage '" + request_template + "', an deren Struktur du dich orientieren sollst: \n" + response_template + "\n\n" 
               "Dir wurde folgende Frage gestellt: ") + query +
               "\n\n Du hast folgende Dokumente zur Verfügung, um eine Antwort zu geben. "
