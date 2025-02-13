@@ -36,9 +36,9 @@ SMA-KMS ist ein Tool zur Verwaltung und Verarbeitung von Wissensdaten mit Hilfe 
    QDRANT_URL=http://localhost:6333
    ```
 
-### Voraussetzungen
+### Empfohlenes Language Model
 
-Empfohlenes Language Model: qwen2.5:7b-instruct
+Folgendes Language Model wird empfohlen: qwen2.5:7b-instruct
 ```bash
 ollama pull qwen2.5:7b-instruct
 ```
