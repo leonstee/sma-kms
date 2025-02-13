@@ -7,11 +7,16 @@ from langchain_qdrant import QdrantVectorStore
 from dotenv import load_dotenv
 from os import getenv
 
-# Zotero DB und Speicherpfad anpassen
-ZOTERO_DB_PATH = os.path.expanduser(r'C:\Users\ehler\Zotero\zotero.sqlite')  # Pfad zur Zotero-Datenbank
-ZOTERO_STORAGE_FOLDER = r'C:\Users\ehler\Zotero\storage'  # Speicherort der Zotero-Daten
-LOCAL_PDF_FOLDER = r'C:\Users\ehler\PycharmProjects\sma-kms'  # Lokales Verzeichnis für PDFs
-OBSIDIAN_MD_FOLDER = r'C:\Users\ehler\Documents\Hochschule Mannheim\Semester3\SMA\SMA'  # Obsidian-Ordner
+from config import (
+    ZOTERO_DB_PATH,
+    ZOTERO_STORAGE_FOLDER,
+    LOCAL_PDF_FOLDER,
+    OBSIDIAN_MD_FOLDER,
+    EMBEDDING_MODEL,
+    QDRANT_URL,
+    QDRANT_COLLECTION
+)
+
 
 load_dotenv()  # Lädt Umgebungsvariablen aus einer .env-Datei
 embed_model = OllamaEmbeddings(model=getenv("EMBEDDING_MODEL"))  # Initialisiert das Embedding-Modell
@@ -89,7 +94,7 @@ def load_and_chunk(file_path):
 
 def save_to_vectorstore(docs, file_path=None):  # file_path als optionales Argument hinzufügen
     try:
-        url = getenv("QDRANT_URL")
+        url = QDRANT_URL
 
         # Dokumente mit einer Priorität versehen und ggf. Dateipfad in Metadaten speichern
         prioritized_docs = []

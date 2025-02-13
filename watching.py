@@ -4,22 +4,17 @@ import time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from qdrant_client import QdrantClient
-from qdrant_client.models import Filter, FieldCondition, MatchValue, MatchText
+from qdrant_client.models import Filter, FieldCondition, MatchValue
 from dotenv import load_dotenv
 from load_data import load_and_chunk, save_to_vectorstore
+from config import QDRANT_URL, QDRANT_COLLECTION, WATCHED_FOLDERS
 
 load_dotenv()
 
-# Verbindung zur Vektordatenbank
-client = QdrantClient(url=os.getenv("QDRANT_URL"))
-collection_name = os.getenv("QDRANT_COLLECTION")
+# Verbindung zur Vektordatenbank mit Werten aus config.py
+client = QdrantClient(url=QDRANT_URL)
+collection_name = QDRANT_COLLECTION
 
-# Verzeichnisse für die Überwachung
-WATCHED_FOLDERS = [
-    os.path.expanduser(r'C:\Users\ehler\Zotero\storage'),
-    os.path.expanduser(r'C:\Users\ehler\PycharmProjects\sma-kms'),
-    os.path.expanduser(r'C:\Users\ehler\Documents\Hochschule Mannheim\Semester3\SMA\SMA')
-]
 
 class FileChangeHandler(FileSystemEventHandler):
     def on_modified(self, event):
