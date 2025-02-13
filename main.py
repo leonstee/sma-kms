@@ -28,6 +28,16 @@ unstructured_chunk_vectorstore = QdrantVectorStore(
 unstructured_chunk_retriever = unstructured_chunk_vectorstore.as_retriever(search_kwargs={"k" : 5})
 
 
+def custom_priority_retriever(query, k=5):
+    results = unstructured_chunk_retriever.invoke(query)
+
+    # Sortiere die Ergebnisse nach Priorität (Zotero hat die höchste Priorität)
+    sorted_results = sorted(results, key=lambda doc: doc.metadata.get('priority', 999))
+
+    # Wähle die Top-k Ergebnisse nach Priorität
+    return sorted_results[:k]
+
+
 
 # Helper functions for prettifying docs
 # Auch Quellen werden mit angegeben
@@ -58,7 +68,7 @@ compression_unstructured_retriever = ContextualCompressionRetriever(
 # und diese als formatierten Text ausgibt, sodass dieser an das LM gegeben werden kann.
 # Neben Inhalt wird auch die Quelle (Dateiname & Seite) angegeben
 def get_chunks_for_llm(query):
-    compressed_docs = compression_unstructured_retriever.invoke(query)
+    compressed_docs = custom_priority_retriever(query)
     return pretty_return_docs(compressed_docs)
 
 

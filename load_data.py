@@ -86,19 +86,31 @@ def load_and_chunk(file_path):
         print(f"Error loading and chunking file: {e}")  # Fehlerbehandlung
         return None
 
-# Speichern der gechunkten Datei im Vector Store
 def save_to_vectorstore(docs):
     try:
-        url = getenv("QDRANT_URL")  # URL für den Qdrant Vector Store
+        url = getenv("QDRANT_URL")
+        # Dokumente mit einer Priorität versehen
+        prioritized_docs = []
+        for doc in docs:
+            if 'zotero' in doc.metadata.get('source', '').lower():
+                doc.metadata['priority'] = 1  # Höchste Priorität für Zotero
+            elif 'obsidian' in doc.metadata.get('source', '').lower():
+                doc.metadata['priority'] = 2  # Mittel Priorität für Obsidian
+            else:
+                doc.metadata['priority'] = 3  # Niedrigere Priorität für lokale PDFs
+            prioritized_docs.append(doc)
+
+        # Vector Store mit den priorisierten Dokumenten erstellen
         unstructured_chunk_vectorstore = QdrantVectorStore.from_documents(
-            docs,  # Gechunkte Dokumente
-            embed_model,  # Das Embedding-Modell
-            url=url,  # URL des Vector Stores
-            prefer_grpc=False,  # Verwendung von gRPC
-            collection_name=getenv("QDRANT_COLLECTION"),  # Sammlung im Vector Store
+            prioritized_docs,
+            embed_model,
+            url=url,
+            prefer_grpc=False,
+            collection_name=getenv("QDRANT_COLLECTION"),
         )
     except Exception as e:
-        print(f"Error saving to vectorstore: {e}")  # Fehlerbehandlung
+        print(f"Error saving to vectorstore: {e}")
+
 
 # Lade und verarbeite Zotero-, Obsidian und lokale PDFs
 def load_ALL_data_and_save_to_vectorstore():
