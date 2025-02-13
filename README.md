@@ -7,6 +7,7 @@ SMA-KMS ist ein Tool zur Verwaltung und Verarbeitung von Wissensdaten mit Hilfe 
 ### Voraussetzungen
 - Python 3.8 oder neuer
 - [pip](https://pip.pypa.io/en/stable/)
+- Qdrant-Vektordatenbank
 
 ### Einrichtung
 
@@ -54,14 +55,18 @@ Dadurch wird die Benutzeroberfläche von SMA-KMS gestartet.
 
 - Der Chat funktioniert bereits.
 - Antworten werden als Stream ausgegeben
-- Die Zitatfunktion ist implementiert, aber die Ergebnisse sind noch nicht perfekt. Bei passender Formulierung sind sie jedoch brauchbar.
+- Die Zitatfunktion ist implementiert, die Ergebnisse sind recht zuverlässig
+- Web-Suche, falls die vorhandenen Dokumente keine Informationen zur Frage bieten
 - Grundlegendes Einlesen einer Datei
 
 ## Was gibt es noch zu tun?
+- Autmatisches Einpflegen von Dokumenten aus Zotero und Obsidian in die Vektordatenbank
+- Priorisierung von Dokumenten aus verschiedenen Quellen
 
+## Was kann man noch erweitern oder verbessern?
 - Chat History / Verlauf implementieren.
 - Prompt für Antworten & Zitate anpassen.
-- Eventuell die Erstellung der Datenbank-Queries mit einem extra Language Model (LM) umsetzen.
-- Optimierung des Einleseprozesses für größere Datenmengen
-
+- In-Chat File Upload mit in-memory DB
+- Fine Tuning des Embedding Models
+- verbose-Variable
 
