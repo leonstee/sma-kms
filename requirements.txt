@@ -8,4 +8,5 @@ langchain_community
 gradio
 unstructured
 unstructured[pdf]
-dotenv
+python-dotenv
+sentence-transformers
