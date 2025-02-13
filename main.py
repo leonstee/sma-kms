@@ -83,12 +83,17 @@ def get_llm_response(query, history=None):
     prompt = (("Du bist ein Assistent rund um Fragen zu IT-Sicherheit und IT-Grundschutz."
               "Du beantwortest Fragen auf Basis von Dokumenten, die dir in der Anfrage zur Verfügung gestellt werden."
               "Für jedes Dokument, das du zur Erstellung der Antwort verwendest, gibst du die Quelle und Seite an."
-              "Falls du auf Basis der Dokumente keine Antwort finden kannst, gib einfach 'null' aus. Versuche nicht, die Frage ohne die Dokumente zu beantworten.\n\n"
+              "Falls du auf Basis der Dokumente keine gute Antwort finden kannst, antworte exakt mit 'Ich kann diese Frage leider nicht beantworten'. Das ist sehr wichtig! Versuche nicht, die Frage nur schlecht oder ohne die Dokumente zu beantworten.\n\n"
+              "Sofern du jedoch relevante Informationen in den bereitgestellten Dokumenten findest, verwende auch alle relevanten Informationen und gebe diese in einer umfangreichen Antwort aus."
               "Hier ist eine beispielhafte Antwort, auf die Frage '" + request_template + "', an deren Struktur du dich orientieren sollst: \n" + response_template + "\n\n" 
               "Dir wurde folgende Frage gestellt: ") + query +
               "\n\n Du hast folgende Dokumente zur Verfügung, um eine Antwort zu geben. "
               "Gib dabei auch die Quelle und die Seite der von dir in der "
-              "Antwort verwendeten Dokumente an.\n\n" + chunks)
+              "Antwort verwendeten Dokumente an.\n\n" + chunks + "\n\n"
+              "Verwende KEINESFALLS Wissen, welches nicht in den Dokumenten enthalten ist. "
+              "Alle von dir verwendeten Begriffe"
+              "müssen in den Dokumenten enthalten sein. Falls das nicht möglich ist, antworte exakt mit dem Satz 'Ich kann diese Frage leider nicht beantworten' "
+              )
 
     client = Client()
     response_stream = client.chat(
