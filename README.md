@@ -7,6 +7,7 @@ SMA-KMS ist ein Tool zur Verwaltung und Verarbeitung von Wissensdaten mit Hilfe 
 ### Voraussetzungen
 - Python 3.8 oder neuer
 - [pip](https://pip.pypa.io/en/stable/)
+- Ollama-Instanz
 - Qdrant-Vektordatenbank
 
 ### Einrichtung
@@ -34,6 +35,16 @@ SMA-KMS ist ein Tool zur Verwaltung und Verarbeitung von Wissensdaten mit Hilfe 
    EMBEDDING_MODEL=bge-m3
    QDRANT_URL=http://localhost:6333
    ```
+
+### Voraussetzungen
+
+Empfohlenes Language Model: qwen2.5:7b-instruct
+```bash
+ollama pull qwen2.5:7b-instruct
+```
+Grund: Eine Websuche wird dann durchgeführt, wenn das LM *"Frage leider nicht beantworten"* erwähnt.
+Die meisten anderen Modelle befolgen die Aufforderung, diese Ausgabe bei unzureichenden Informationen zu tätigen, nicht oder nur in abgewandeltem Wortlaut.
+
 
 ## Datenvorbereitung
 
