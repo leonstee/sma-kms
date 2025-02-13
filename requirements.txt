@@ -10,3 +10,4 @@ unstructured
 unstructured[pdf]
 python-dotenv
 sentence-transformers
+markdown
