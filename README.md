@@ -20,7 +20,7 @@ SMA-KMS ist ein Tool zur Verwaltung und Verarbeitung von Wissensdaten mit Hilfe 
 
 2. Installiere die Abhängigkeiten:
    ```bash
-   pip install -r --upgrade requirements.txt
+   pip install --upgrade -r requirements.txt
    ```
 
 3. Kopiere die `.env.example` Datei und passe sie an:
