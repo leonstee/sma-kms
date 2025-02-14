@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 from os import getenv
 
 from config import (
-    ZOTERO_DB_PATH,
     ZOTERO_STORAGE_FOLDER,
     LOCAL_PDF_FOLDER,
     OBSIDIAN_MD_FOLDER,
@@ -22,57 +21,30 @@ load_dotenv()  # Lädt Umgebungsvariablen aus einer .env-Datei
 embed_model = OllamaEmbeddings(model=getenv("EMBEDDING_MODEL"))  # Initialisiert das Embedding-Modell
 
 # Funktion, um Zotero-PDFs zu extrahieren
+def get_files_by_extension(folder_path, extension):
+    """
+    Durchsucht einen Ordner rekursiv nach Dateien mit einer bestimmten Erweiterung.
+
+    :param folder_path: Pfad zum Verzeichnis, das durchsucht werden soll
+    :param extension: Dateierweiterung (z. B. ".pdf", ".md")
+    :return: Liste der gefundenen Dateien mit vollständigem Pfad
+    """
+    files = []
+    for root, _, file_names in os.walk(folder_path):
+        for file in file_names:
+            if file.lower().endswith(extension.lower()):
+                files.append(os.path.join(root, file))
+    return files
+
+# Spezifische Funktionen mit vordefinierten Pfaden und Dateitypen
 def get_zotero_pdfs():
-    conn = sqlite3.connect(ZOTERO_DB_PATH)  # Verbindung zur Zotero-Datenbank
-    cursor = conn.cursor()
+    return get_files_by_extension(ZOTERO_STORAGE_FOLDER, ".pdf")
 
-    # Hole die Dateipfade und ihre itemIDs für PDF-Dateien
-    cursor.execute("SELECT itemID, path FROM itemAttachments WHERE contentType='application/pdf';")
-    attachments = cursor.fetchall()
-
-    # Erstelle eine Liste von PDF-Dateien mit vollständigen Pfaden
-    pdfs = []
-    for attachment in attachments:
-        item_id, file_path = attachment
-
-        # Überprüfen, ob der Pfad mit 'storage:' beginnt
-        if file_path.startswith("storage:"):
-            relative_path = file_path.replace("storage:", "")
-
-            # Durchsuche alle Unterordner von Zotero 'storage'
-            for root, dirs, files in os.walk(ZOTERO_STORAGE_FOLDER):
-                if relative_path in files:
-                    full_file_path = os.path.join(root, relative_path)
-                    if os.path.exists(full_file_path):
-                        pdfs.append(full_file_path)
-                    else:
-                        print(f"Datei nicht gefunden: {full_file_path}")
-                    break  # Wenn die Datei gefunden wurde, beende die Schleife
-
-    conn.close()  # Schließe die Verbindung zur Datenbank
-    return pdfs  # Rückgabe der gefundenen PDF-Dateien
-
-# Funktion, um lokale PDFs zu extrahieren
 def get_local_pdfs():
-    pdfs = []
-    # Durchsuche den angegebenen Ordner nach PDFs
-    for root, dirs, files in os.walk(LOCAL_PDF_FOLDER):
-        for file in files:
-            if file.lower().endswith(".pdf"):  # Überprüfen, ob es sich um eine PDF handelt
-                full_file_path = os.path.join(root, file)
-                pdfs.append(full_file_path)
-    return pdfs  # Rückgabe der gefundenen lokalen PDF-Dateien
-
+    return get_files_by_extension(LOCAL_PDF_FOLDER, ".pdf")
 
 def get_obsidian_md_files():
-    md_files = []
-    # Durchsuche den angegebenen Ordner nach Markdown-Dateien
-    for root, dirs, files in os.walk(OBSIDIAN_MD_FOLDER):
-        for file in files:
-            if file.lower().endswith(".md"):  # Überprüfen, ob es sich um eine Markdown-Datei handelt
-                full_file_path = os.path.join(root, file)
-                md_files.append(full_file_path)
-    return md_files  # Rückgabe der gefundenen Obsidian-Markdown-Dateien
+    return get_files_by_extension(OBSIDIAN_MD_FOLDER, ".md")
 
 # Lade und chunk die Datei
 def load_and_chunk(file_path):
@@ -95,6 +67,7 @@ def load_and_chunk(file_path):
 def save_to_vectorstore(docs, file_path=None):  # file_path als optionales Argument hinzufügen
     try:
         url = QDRANT_URL
+        print(f"Saving to vectorstore: {url}")
 
         # Dokumente mit einer Priorität versehen und ggf. Dateipfad in Metadaten speichern
         prioritized_docs = []
