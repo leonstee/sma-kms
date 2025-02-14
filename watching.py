@@ -22,14 +22,14 @@ class FileChangeHandler(FileSystemEventHandler):
             return
         if event.src_path.endswith(".pdf") or event.src_path.endswith(".md"):
             print(f"Geänderte Datei erkannt: {event.src_path}")
-            self.process_file(event.src_path)
+            self.process_file(event.src_path, is_update=True)
 
     def on_created(self, event):
         if event.is_directory:
             return
         if event.src_path.endswith(".pdf") or event.src_path.endswith(".md"):
             print(f"Neue Datei erkannt: {event.src_path}")
-            self.process_file(event.src_path)
+            self.process_file(event.src_path, is_update=False)
 
     def on_deleted(self, event):
         if event.is_directory:
@@ -37,8 +37,14 @@ class FileChangeHandler(FileSystemEventHandler):
         print(f"Datei gelöscht: {event.src_path}")
         self.delete_all_vectors_with_filename(event.src_path)
 
-    def process_file(self, file_path):
+    def process_file(self, file_path, is_update=False):
         # Lade und chunk die Datei
+
+        if is_update:
+            print(f"lösche alte Vektorne vor dem Neuspeichern für: {file_path}")
+            self.delete_all_vectors_with_filename(file_path)
+
+
         docs = load_and_chunk(file_path)
         if docs:
             # Speichere die chunked-Daten in der Vektordatenbank
@@ -69,7 +75,7 @@ class FileChangeHandler(FileSystemEventHandler):
             MAX_BATCHES = 50  # Maximale Anzahl an Schleifendurchläufen
 
             while batch_counter < MAX_BATCHES:  # Begrenzung auf 50 Durchläufe
-                print(f"🟡 Scrolle nach Vektoren für {filename}... (Batch {batch_counter})")
+                print(f"Scrolle nach Vektoren für {filename}... (Batch {batch_counter})")
 
                 scroll_result, next_offset = client.scroll(
                     collection_name=collection_name,
