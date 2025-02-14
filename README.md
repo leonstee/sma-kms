@@ -78,5 +78,5 @@ Dadurch wird die Benutzeroberfläche von SMA-KMS gestartet.
 - Optimierung des Embedding-Modells
 - OCR- und Bildanalyse integrieren
 - Effiziente Aktualisierung der Vektoren bei Dateiänderungen, statt vollständigem Löschen und dann wiedereinfügen
-- UI/UX Anpassen (ist nicht schön aber selten)
+- UI/UX anpassen (ist nicht schön aber selten)
 
