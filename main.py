@@ -28,6 +28,16 @@ unstructured_chunk_vectorstore = QdrantVectorStore(
 unstructured_chunk_retriever = unstructured_chunk_vectorstore.as_retriever(search_kwargs={"k" : 5})
 
 
+def custom_priority_retriever(query, k=5):
+    results = compression_unstructured_retriever.invoke(query)
+
+    # Sortiere die Ergebnisse nach Priorität
+    sorted_results = sorted(results, key=lambda doc: doc.metadata.get('priority', 999))
+
+    # Wähle die Top-k Ergebnisse nach Priorität
+    return sorted_results[:k]
+
+
 
 # Helper functions for prettifying docs
 # Auch Quellen werden mit angegeben
@@ -58,7 +68,7 @@ compression_unstructured_retriever = ContextualCompressionRetriever(
 # und diese als formatierten Text ausgibt, sodass dieser an das LM gegeben werden kann.
 # Neben Inhalt wird auch die Quelle (Dateiname & Seite) angegeben
 def get_chunks_for_llm(query):
-    compressed_docs = compression_unstructured_retriever.invoke(query)
+    compressed_docs = custom_priority_retriever(query)
     return pretty_return_docs(compressed_docs)
 
 
@@ -83,8 +93,10 @@ def get_llm_response(query, history=None):
     prompt = (("Du bist ein Assistent rund um Fragen zu IT-Sicherheit und IT-Grundschutz."
               "Du beantwortest Fragen auf Basis von Dokumenten, die dir in der Anfrage zur Verfügung gestellt werden."
               "Für jedes Dokument, das du zur Erstellung der Antwort verwendest, gibst du die Quelle und Seite an."
+
               "Falls du auf Basis der Dokumente keine gute Antwort finden kannst, antworte exakt mit 'Ich kann diese Frage leider nicht beantworten'. Das ist sehr wichtig! Versuche nicht, die Frage nur schlecht oder ohne die Dokumente zu beantworten.\n\n"
               "Sofern du jedoch relevante Informationen in den bereitgestellten Dokumenten findest, verwende auch alle relevanten Informationen und gebe diese in einer umfangreichen Antwort aus."
+
               "Hier ist eine beispielhafte Antwort, auf die Frage '" + request_template + "', an deren Struktur du dich orientieren sollst: \n" + response_template + "\n\n" 
               "Dir wurde folgende Frage gestellt: ") + query +
               "\n\n Du hast folgende Dokumente zur Verfügung, um eine Antwort zu geben. "

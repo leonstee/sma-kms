@@ -9,7 +9,9 @@ gradio
 unstructured
 unstructured[pdf]
 python-dotenv
-beautifulsoup4
+sentence-transformers
+markdown
+watchdog
 googlesearch-python
 curl_cffi
 unstructured[html]
