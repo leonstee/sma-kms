@@ -119,7 +119,6 @@ def load_all_data_and_save_to_vectorstore():
     if not all_documents:
         print("Keine Dokumente zum Laden gefunden.")
         return
-
     # Erstelle und speichere den VectorStore
     save_to_vectorstore(all_documents)
     print("Dokumente wurden erfolgreich in den Vectorstore geladen.")

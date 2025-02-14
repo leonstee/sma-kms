@@ -1,0 +1,41 @@
+volumes:
+  qdrant_storage:
+
+networks:
+  kms:
+
+services:
+  db:
+    image: qdrant/qdrant
+    hostname: qdrant
+    container_name: qdrant-kms
+    networks: ['kms']
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:6333/healthz" ]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_storage:/qdrant/storage
+  kms:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: kms
+    depends_on:
+      db:
+        condition: service_healthy
+    container_name: kms
+    networks: ['kms']
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "7860:7860"
+    volumes:
+      - ${ZOTERO_STORAGE_FOLDER}:/zotero
+      - ${OBSIDIAN_MD_FOLDER}:/obsidian
+      - ${LOCAL_PDF_FOLDER}:/pdfs

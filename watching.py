@@ -17,6 +17,7 @@ collection_name = QDRANT_COLLECTION
 
 
 class FileChangeHandler(FileSystemEventHandler):
+
     def on_modified(self, event):
         if event.is_directory:
             return
@@ -122,7 +123,11 @@ class FileChangeHandler(FileSystemEventHandler):
             print(f"Fehler beim Löschen der Vektoren: {e}")
 
 
+
+
 if __name__ == "__main__":
+
+
     event_handler = FileChangeHandler()
     observer = Observer()
     for folder in WATCHED_FOLDERS:

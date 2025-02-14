@@ -1,12 +1,14 @@
 from langchain_ollama import OllamaEmbeddings
 from langchain_qdrant import QdrantVectorStore
 from ollama import Client
-from qdrant_client import QdrantClient
+from qdrant_client import QdrantClient, models
 from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import CrossEncoderReranker
 from langchain_community.cross_encoders import HuggingFaceCrossEncoder
 from dotenv import load_dotenv
 from os import getenv
+
+from config import QDRANT_COLLECTION
 
 # Setup Embedding Model
 load_dotenv()
@@ -16,11 +18,26 @@ embed_model = OllamaEmbeddings(model=getenv("EMBEDDING_MODEL"))
 # Connect to Vector Store
 client = QdrantClient(url=getenv("QDRANT_URL"))
 
+def create_collection_if_not_exists():
+    if not client.collection_exists(QDRANT_COLLECTION):
+        vector = embed_model.embed_query("test")
+        vector_size = len(vector)
+        client.create_collection(
+            collection_name=QDRANT_COLLECTION,
+            vectors_config=models.VectorParams(size=vector_size, distance=models.Distance.COSINE),
+        )
+        print(f"Collection {QDRANT_COLLECTION} erstellt.")
+
+# Beim Starten der Anwendung eine Collection anlegen, falls noch keine existiert
+create_collection_if_not_exists()
+
+
 unstructured_chunk_vectorstore = QdrantVectorStore(
     client=client,
     collection_name=getenv("QDRANT_COLLECTION"),
     embedding=embed_model,
 )
+
 
 
 # Instantiate Retrieval Step
