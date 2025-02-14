@@ -62,22 +62,20 @@ python gradio_ui.py
 ```
 Dadurch wird die Benutzeroberfläche von SMA-KMS gestartet.
 
-## Was funktioniert aktuell?
-
-- Der Chat funktioniert bereits.
+## Bestehende Funktionen:
+- Standard-Chat ist funktionsfähig
 - Antworten werden als Stream ausgegeben
-- Die Zitatfunktion ist implementiert, die Ergebnisse sind recht zuverlässig
-- Web-Suche, falls die vorhandenen Dokumente keine Informationen zur Frage bieten
-- Grundlegendes Einlesen einer Datei
-
-## Was gibt es noch zu tun?
-- Autmatisches Einpflegen von Dokumenten aus Zotero und Obsidian in die Vektordatenbank
+- Zitatfunktion ist integriert
+- Web-Suche bei fehlenden Informationen in den vorhandenen Dokumenten
+- Grundlegendes Einlesen von Dateien
+- Automatische Aufnahme von Dokumenten aus Zotero, Obsidian und lokalen Dateien in die Vektordatenbank
 - Priorisierung von Dokumenten aus verschiedenen Quellen
 
-## Was kann man noch erweitern oder verbessern?
-- Chat History / Verlauf implementieren.
-- Prompt für Antworten & Zitate anpassen.
-- In-Chat File Upload mit in-memory DB
-- Fine Tuning des Embedding Models
-- verbose-Variable
+## Mögliche Erweiterungen und Verbesserungen
+- Chat-Kontext-History für eine kohärente Interaktion speichern
+- Web-Interface für Einstellungen (z. B. Priorisierung, Datei-Pfade)
+- In-Chat Datei-Upload mit In-Memory-Datenbank
+- Optimierung des Embedding-Modells
+- OCR- und Bildanalyse integrieren
+- Effiziente Aktualisierung der Vektoren bei Dateiänderungen, statt vollständigem Löschen und dann wiedereinfügen
 
