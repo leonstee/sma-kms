@@ -12,3 +12,6 @@ python-dotenv
 sentence-transformers
 markdown
 watchdog
+googlesearch-python
+curl_cffi
+unstructured[html]
