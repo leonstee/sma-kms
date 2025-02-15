@@ -29,23 +29,17 @@ SMA-KMS ist ein **lokal betriebenes**, KI-gestütztes Wissensmanagementsystem (K
 
    Die folgenden Variablen **müssen** angepasst werden:
 
-   - `ZOTERO_STORAGE_FOLDER`
-   - `OBSIDIAN_MD_FOLDER`
-   - `LOCAL_PDF_FOLDER`
+   - `ZOTERO_STORAGE_FOLDER` (Pfad zum Zotero-Speicherordner)
+   - `OBSIDIAN_MD_FOLDER` (Pfad zum Obsidian-Markdown-Ordner)
+   - `LOCAL_PDF_FOLDER` (Pfad zu allen gewünschten lokalen PDFs)
 
    Die folgenden Variablen **können** je nach Bedarf angepasst werden:
 
-   - `LM_MODEL`
-   - `EMBEDDING_MODEL`
-   - `QDRANT_COLLECTION`
-
-3. **Erstelle und starte die Container:**
-
-   ```bash
-   docker-compose up -d --build
-   ```
-
-5. **Lade das empfohlene Language Model herunter und starte Ollama:**
+   - `LM_MODEL` (verwendetes Large Language Model)
+   - `EMBEDDING_MODEL` (Modell zur Vektorisierung von Texten)
+   - `QDRANT_COLLECTION` (Name der Sammlung in der Vektordatenbank)
+  
+3. **Lade das empfohlene Language Model herunter und starte Ollama:**
 
    ```bash
    ollama pull qwen2.5:7b-instruct
@@ -53,7 +47,13 @@ SMA-KMS ist ein **lokal betriebenes**, KI-gestütztes Wissensmanagementsystem (K
    ollama serve
    ```
 
-6. **Öffne die Benutzeroberfläche:**
+4. **Erstelle und starte die Container:**
+
+   ```bash
+   docker-compose up -d --build
+   ```
+
+5. **Öffne die Benutzeroberfläche:**
    Sobald die Container gestartet sind, kann das Webinterface über `http://localhost:7860` 🌐 aufgerufen werden.
 
 ---
@@ -150,6 +150,7 @@ Lokaler Betrieb ermöglicht schnelle Antwortzeiten und die Möglichkeit, das Sys
 
 ## 🔧 Mögliche Erweiterungen & Verbesserungen
 
+- 🛠 **Docker-Compose-Profil für Ollama:** Ein zusätzlicher Profilmodus in der `docker-compose.yml`, der Ollama direkt in Docker installiert und automatisch die benötigten Images herunterlädt.
 - 🗂 **Chat-Kontext-History speichern:** Für eine kohärente und kontextbezogene Interaktion mit dem System.
 - 🎛 **Web-Interface für Einstellungen:** Anpassungen wie Priorisierung von Quellen oder Dateipfade über eine intuitive Benutzeroberfläche ermöglichen.
 - 📤 **In-Chat Datei-Upload:** Direkte Verarbeitung hochgeladener Dokumente mithilfe einer In-Memory-Datenbank.
