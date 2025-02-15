@@ -10,9 +10,9 @@ SMA-KMS ist ein **lokal betriebenes**, KI-gestütztes Wissensmanagementsystem (K
 
 #### ✅ Voraussetzungen
 
+- 🖥 **Git**
 - 🐳 **Docker & Docker Compose**
 - 🧠 **Ollama** (lokal oder in Docker, Installation [hier](https://ollama.ai) verfügbar)
-- 🖥 **Git**
 
 1. **Klone das Repository:**
 
@@ -62,6 +62,7 @@ SMA-KMS ist ein **lokal betriebenes**, KI-gestütztes Wissensmanagementsystem (K
 
 #### ✅ Voraussetzungen
 
+- 🖥 **Git**
 - 🐍 **Python 3.8 oder neuer**
 - 📦 **pip** (für Paketverwaltung)
 - 📂 **Qdrant-Vektordatenbank** (Installation [hier](https://qdrant.tech/documentation/quickstart/) verfügbar)
