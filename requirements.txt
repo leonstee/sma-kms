@@ -16,3 +16,4 @@ googlesearch-python
 curl_cffi
 unstructured[html]
 unstructured[md]
+unstructured[all]
