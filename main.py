@@ -6,17 +6,16 @@ from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import CrossEncoderReranker
 from langchain_community.cross_encoders import HuggingFaceCrossEncoder
 from dotenv import load_dotenv
-from os import getenv
 
-from config import QDRANT_COLLECTION
+from config import QDRANT_COLLECTION, QDRANT_URL, EMBEDDING_MODEL, OLLAMA_HOST, LM_MODEL
 
 # Setup Embedding Model
 load_dotenv()
 
-embed_model = OllamaEmbeddings(model=getenv("EMBEDDING_MODEL"))
+embed_model = OllamaEmbeddings(base_url=OLLAMA_HOST,model=EMBEDDING_MODEL)
 
 # Connect to Vector Store
-client = QdrantClient(url=getenv("QDRANT_URL"))
+client = QdrantClient(url=QDRANT_URL)
 
 def create_collection_if_not_exists():
     if not client.collection_exists(QDRANT_COLLECTION):
@@ -34,7 +33,7 @@ create_collection_if_not_exists()
 
 unstructured_chunk_vectorstore = QdrantVectorStore(
     client=client,
-    collection_name=getenv("QDRANT_COLLECTION"),
+    collection_name=QDRANT_COLLECTION,
     embedding=embed_model,
 )
 
@@ -90,7 +89,7 @@ def get_chunks_for_llm(query):
 
 
 # Instanziierung des Ollama-Clients
-ollama = Client(host=getenv("OLLAMA_HOST"))
+ollama = Client(host=OLLAMA_HOST)
 
 # Gibt der LM die Nutzeranfrage und die dazu passenden Dokumente
 # LM gibt Antwort zurück
@@ -128,9 +127,9 @@ def get_llm_response(query, history=None):
               "Falls das nicht möglich ist, antworte exakt mit dem Satz 'Ich kann diese Frage leider nicht beantworten' "
               )
 
-    client = Client()
+    client = Client(host=OLLAMA_HOST)
     response_stream = client.chat(
-        model=getenv("LM_MODEL"),
+        model=LM_MODEL,
         messages=[{"role": "user", "content": prompt}],
         stream=True
     )

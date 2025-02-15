@@ -1,11 +1,8 @@
 import os
-import sqlite3
 from langchain_ollama import OllamaEmbeddings
-from langchain_ollama import ChatOllama
 from langchain_unstructured import UnstructuredLoader
 from langchain_qdrant import QdrantVectorStore
 from dotenv import load_dotenv
-from os import getenv
 
 from config import (
     ZOTERO_STORAGE_FOLDER,
@@ -13,12 +10,12 @@ from config import (
     OBSIDIAN_MD_FOLDER,
     EMBEDDING_MODEL,
     QDRANT_URL,
-    QDRANT_COLLECTION
+    QDRANT_COLLECTION, OLLAMA_HOST
 )
 
 
 load_dotenv()  # Lädt Umgebungsvariablen aus einer .env-Datei
-embed_model = OllamaEmbeddings(model=getenv("EMBEDDING_MODEL"))  # Initialisiert das Embedding-Modell
+embed_model = OllamaEmbeddings(model=EMBEDDING_MODEL, base_url=OLLAMA_HOST)  # Initialisiert das Embedding-Modell
 
 # Funktion, um Zotero-PDFs zu extrahieren
 def get_files_by_extension(folder_path, extension):
@@ -91,7 +88,7 @@ def save_to_vectorstore(docs, file_path=None):  # file_path als optionales Argum
             embed_model,
             url=url,
             prefer_grpc=False,
-            collection_name=getenv("QDRANT_COLLECTION"),
+            collection_name=QDRANT_COLLECTION,
         )
     except Exception as e:
         print(f"Error saving to vectorstore: {e}")

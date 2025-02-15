@@ -5,11 +5,9 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from qdrant_client import QdrantClient
 from qdrant_client.models import Filter, FieldCondition, MatchValue
-from dotenv import load_dotenv
 from load_data import load_and_chunk, save_to_vectorstore
 from config import QDRANT_URL, QDRANT_COLLECTION, WATCHED_FOLDERS
 
-load_dotenv()
 
 # Verbindung zur Vektordatenbank mit Werten aus config.py
 client = QdrantClient(url=QDRANT_URL)

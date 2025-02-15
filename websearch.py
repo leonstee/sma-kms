@@ -1,5 +1,3 @@
-from os import getenv
-
 from googlesearch import search
 from curl_cffi import requests
 from datetime import datetime
@@ -15,7 +13,9 @@ from unstructured.partition.html import partition_html
 
 from ollama import Client
 
-embed_model = OllamaEmbeddings(model=getenv("EMBEDDING_MODEL"))
+from config import LM_MODEL, EMBEDDING_MODEL, OLLAMA_HOST
+
+embed_model = OllamaEmbeddings(model=EMBEDDING_MODEL, base_url=OLLAMA_HOST)
 
 
 
@@ -91,9 +91,9 @@ def get_llm_web_response(query, history=None):
               "Antwort verwendeten Webseite an.\n\n" + source + "\n\n" +
               "Gib keine Überlegungen oder Zwischenschritte aus. Gib nur deine finale Antwort aus.")
 
-    client = Client()
+    client = Client(host=OLLAMA_HOST)
     response_stream = client.chat(
-        model=getenv("LM_MODEL"),
+        model=LM_MODEL,
         messages=[{"role": "user", "content": prompt}],
         stream=True
     )
@@ -160,9 +160,9 @@ def get_llm_web_response_vectorstore(query, history=None):
               "Solltest du eines der bereitgestellten Dokumente benutzen, gib die Quelle wie im Beispiel an!"
               )
 
-    client = Client()
+    client = Client(host=OLLAMA_HOST)
     response_stream = client.chat(
-        model=getenv("LM_MODEL"),
+        model=LM_MODEL,
         messages=[{"role": "user", "content": prompt}],
         stream=True
     )
