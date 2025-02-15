@@ -113,7 +113,11 @@ def get_llm_response(query, history=None):
 
               "Falls du auf Basis der Dokumente keine gute Antwort finden kannst, antworte exakt mit 'Ich kann diese Frage leider nicht beantworten'. Das ist sehr wichtig! Versuche nicht, die Frage nur schlecht oder ohne die Dokumente zu beantworten.\n\n"
               "Sofern du jedoch relevante Informationen in den bereitgestellten Dokumenten findest, verwende auch alle relevanten Informationen und gebe diese in einer umfangreichen Antwort aus.\n"
-               "Zitiere nicht nur Dokumente, sondern nutze sie auch, um eigene Antworten daraus zu bilden. Denke also nach und kombiniere logisch. Das ist unfassbar wichtig! Du sollst selbst nachdenken und das bereitgestellte Wissen sinnvoll nutzen. Quellen gibst du aber trotzdem an."
+               "Zitiere nicht nur Dokumente, sondern nutze sie auch, um eigene Antworten daraus zu bilden. Denke also nach und kombiniere logisch. Das ist unfassbar wichtig! Du sollst selbst nachdenken und das bereitgestellte Wissen sinnvoll nutzen. Quellen gibst du aber trotzdem an.\n"
+               "Quellen gibst du mit Dateititel, Dateipfad und Seitennummer an. Nur die Nummer des Documents reicht nicht aus!"
+               "Wenn du wirklich keine Antwort finden kannst, gibst du 'Ich kann diese Frage leider nicht beantworten' aus. Tue das aber wirklich nur, wenn keine sinnvolle oder gute Antwort möglich ist. Probiere zumindest, die Situation und Interessen des Nutzers zu verstehen und "
+               "eine gute Antwort zu bilden. Solltest du im Laufe der Generierung merken, dass die Antwort nicht gut ist, kannst du jederzeit 'Ich kann diese Frage leider nicht beantworten' ausgeben. Das ist in Ordnung. \n\n"
+               "Vergiss niemals, die Quellen mit Dateipfad und Seite anzugeben!"
 
               "Hier ist eine beispielhafte Antwort, auf die Frage '" + request_template + "', an deren Struktur du dich orientieren sollst: \n" + response_template + "\n\n" 
               "Dir wurde folgende Frage gestellt: ") + query +
