@@ -38,14 +38,8 @@ SMA-KMS ist ein **lokal betriebenes**, KI-gestütztes Wissensmanagementsystem (K
    - `LM_MODEL` (verwendetes Large Language Model)
    - `EMBEDDING_MODEL` (Modell zur Vektorisierung von Texten)
    - `QDRANT_COLLECTION` (Name der Sammlung in der Vektordatenbank)
-
-3. **Erstelle und starte die Container:**
-
-   ```bash
-   docker-compose up -d --build
-   ```
-
-5. **Lade das empfohlene Language Model herunter und starte Ollama:**
+  
+3. **Lade das empfohlene Language Model herunter und starte Ollama:**
 
    ```bash
    ollama pull qwen2.5:7b-instruct
@@ -53,7 +47,13 @@ SMA-KMS ist ein **lokal betriebenes**, KI-gestütztes Wissensmanagementsystem (K
    ollama serve
    ```
 
-6. **Öffne die Benutzeroberfläche:**
+4. **Erstelle und starte die Container:**
+
+   ```bash
+   docker-compose up -d --build
+   ```
+
+5. **Öffne die Benutzeroberfläche:**
    Sobald die Container gestartet sind, kann das Webinterface über `http://localhost:7860` 🌐 aufgerufen werden.
 
 ---
