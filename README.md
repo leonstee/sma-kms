@@ -1,6 +1,6 @@
 # 🚀 SMA-KMS
 
-SMA-KMS ist ein **lokal betriebenes**, KI-gestütztes Wissensmanagementsystem (KMS), das wissenschaftliche Dokumente 📄, persönliche Notizen 📝 und externe Webquellen 🌍 integriert, um effiziente Recherchen und Analysen zu ermöglichen. Es nutzt moderne Open-Source-Technologien wie Large Language Models (LLMs) und Vektorendatenbanken.
+SMA-KMS ist ein **lokal betriebenes**, KI-gestütztes Wissensmanagementsystem (KMS), das wissenschaftliche Dokumente 📄, persönliche Notizen 📝 und externe Webquellen 🌍 integriert, um effiziente Recherchen und Analysen zu ermöglichen. Es nutzt moderne Open-Source-Technologien wie Large Language Models (LLMs) und Vektorendatenbanken.  Der Hauptanwendungsbereich ist das Information Security Management, insbesondere für Compliance, wobei es zur Verwaltung sicherheitsrelevanter Informationen und zur Unterstützung von Sicherheitsanalysen eingesetzt werden kann.
 
 ---
 
@@ -12,7 +12,7 @@ SMA-KMS ist ein **lokal betriebenes**, KI-gestütztes Wissensmanagementsystem (K
 
 - 🖥 **Git**
 - 🐳 **Docker & Docker Compose**
-- 🧠 **Ollama** (lokal oder in Docker, Installation [hier](https://ollama.ai) verfügbar)
+- 🧠 **laufende Ollama-Instanz** (Installation [hier](https://ollama.ai) verfügbar)
 
 1. **Klone das Repository:**
 
@@ -35,9 +35,12 @@ SMA-KMS ist ein **lokal betriebenes**, KI-gestütztes Wissensmanagementsystem (K
 
    Die folgenden Variablen **können** je nach Bedarf angepasst werden:
 
+   - `OLLAMA_HOST` (Ollama-Adresse, falls nicht der Standardport genutzt wird)
    - `LM_MODEL` (verwendetes Large Language Model)
    - `EMBEDDING_MODEL` (Modell zur Vektorisierung von Texten)
    - `QDRANT_COLLECTION` (Name der Sammlung in der Vektordatenbank)
+  
+   Die Variable `QDRANT_URL` wird im Docker-Betrieb nicht genutzt.
   
 3. **Lade das empfohlene Language Model herunter und starte Ollama:**
 
@@ -66,29 +69,36 @@ SMA-KMS ist ein **lokal betriebenes**, KI-gestütztes Wissensmanagementsystem (K
 - 🐍 **Python 3.8 oder neuer**
 - 📦 **pip** (für Paketverwaltung)
 - 📂 **Qdrant-Vektordatenbank** (Installation [hier](https://qdrant.tech/documentation/quickstart/) verfügbar)
-- 🧠 **Ollama** (Installation [hier](https://ollama.ai) verfügbar)
+- 🧠 **laufende Ollama-Instanz** (Installation [hier](https://ollama.ai) verfügbar)
 
 Falls du SMA-KMS ohne Docker lokal einrichten möchtest, folge diesen Schritten:
 
-1. 📦 Installiere die benötigten Abhängigkeiten:
+1. **Klone das Repository:**
+
+   ```bash
+   git clone https://github.com/leonstee/sma-kms.git
+   cd sma-kms
+   ```
+
+2. 📦 Installiere die benötigten Abhängigkeiten:
 
    ```bash
    pip install --upgrade -r requirements.txt
    ```
 
-2. 📑 Kopiere die `.env.example` Datei und passe sie an:
+3. 📑 Kopiere die `.env.example` Datei und passe sie an:
 
    ```bash
    cp .env.example .env
    ```
 
 
-3. ⚙ **Anpassung der ********************************************`config.py`******************************************** Datei:**
+4. ⚙ **Anpassung der ********************************************`config.py`******************************************** Datei:**
 
    - Falls SMA-KMS innerhalb von Docker betrieben wird, sind die vordefinierten Pfade in `config.py` (`/zotero`, `/obsidian`, `/pdfs`) korrekt.
    - Für lokale Entwicklung müssen stattdessen die entsprechenden Umgebungsvariablen aus `.env` genutzt werden. Hierbei sollten die auskommentierten Alternativen in `config.py` aktiviert werden.
 
-4. 📂 **Qdrant-Datenbank starten:**
+5. 📂 **Qdrant-Datenbank starten:**
    SMA-KMS benötigt eine **Qdrant-Datenbank** für die Vektorensuche. Falls Qdrant nicht bereits als Dienst läuft, kann es mit folgendem Docker-Befehl gestartet werden:
 
    ```bash
@@ -96,7 +106,7 @@ Falls du SMA-KMS ohne Docker lokal einrichten möchtest, folge diesen Schritten:
    ```
 
 
-5. 📥 Lade das empfohlene Language Model herunter und starte Ollama:
+6. 📥 Lade das empfohlene Language Model herunter und starte Ollama:
 
    ```bash
    ollama pull qwen2.5:7b-instruct
@@ -104,20 +114,20 @@ Falls du SMA-KMS ohne Docker lokal einrichten möchtest, folge diesen Schritten:
    ollama serve
    ```
 
-6. ▶ **Starte die Anwendung:**
+7. ▶ **Starte die Anwendung:**
 
    ```bash
    python gradio_ui.py
    ```
 
-7. ▶ **Starte den Datei-Überwachungsdienst:**
+8. ▶ **Starte den Datei-Überwachungsdienst:**
    Damit Änderungen an den gespeicherten Dateien automatisch erkannt und verarbeitet werden, muss folgendes Skript ausgeführt werden:
 
    ```bash
    python watching.py
    ```
 
-8. **Öffne die Benutzeroberfläche:**
+9. **Öffne die Benutzeroberfläche:**
    Sobald die Container gestartet sind, kann das Webinterface über `http://localhost:7860` 🌐 aufgerufen werden.
 
 ---
