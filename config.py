@@ -26,7 +26,7 @@ OBSIDIAN_MD_FOLDER ="/obsidian" # bei Nutzung in Docker
 # Embedding- und Vector Store-Konfiguration
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "bge-m3")
 
-QDRANT_URL = os.getenv("QDRANT_URL", "http://db:6333") # bei Nutzung in Docker
+QDRANT_URL = "http://db:6333" # bei Nutzung in Docker
 #QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333") # bei lokaler Entwicklung
 
 QDRANT_COLLECTION = os.getenv("QDRANT_COLLECTION", "sma-kms")
