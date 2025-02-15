@@ -159,7 +159,7 @@ Lokaler Betrieb ermöglicht schnelle Antwortzeiten und die Möglichkeit, das Sys
 
 ## 🎯 Fazit
 
-SMA-KMS bietet eine **leistungsfähige, lokal betriebene** Lösung für AI-gestütztes Wissensmanagement mit **hoher Anpassbarkeit** und **Datenschutz**. Durch die Nutzung moderner **Open-Source-Technologien** ist das System **flexibel erweiterbar** und praxisnah einsetzbar. 🏆
+SMA-KMS bietet eine **leistungsfähige, lokal betriebene** Lösung für KI-gestütztes Wissensmanagement mit **hoher Anpassbarkeit** und **Datenschutz**. Durch den Einsatz moderner **Open-Source-Technologien** ist das System **flexibel erweiterbar** und praxisnah nutzbar. 🏆
 
 
 
