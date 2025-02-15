@@ -29,15 +29,15 @@ SMA-KMS ist ein **lokal betriebenes**, KI-gestütztes Wissensmanagementsystem (K
 
    Die folgenden Variablen **müssen** angepasst werden:
 
-   - `ZOTERO_STORAGE_FOLDER`
-   - `OBSIDIAN_MD_FOLDER`
-   - `LOCAL_PDF_FOLDER`
+   - `ZOTERO_STORAGE_FOLDER` (Pfad zum Zotero-Speicherordner)
+   - `OBSIDIAN_MD_FOLDER` (Pfad zum Obsidian-Markdown-Ordner)
+   - `LOCAL_PDF_FOLDER` (Pfad zu allen gewünschten lokalen PDFs)
 
    Die folgenden Variablen **können** je nach Bedarf angepasst werden:
 
-   - `LM_MODEL`
-   - `EMBEDDING_MODEL`
-   - `QDRANT_COLLECTION`
+   - `LM_MODEL` (verwendetes Large Language Model)
+   - `EMBEDDING_MODEL` (Modell zur Vektorisierung von Texten)
+   - `QDRANT_COLLECTION` (Name der Sammlung in der Vektordatenbank)
 
 3. **Erstelle und starte die Container:**
 
