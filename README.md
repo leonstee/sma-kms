@@ -150,6 +150,7 @@ Lokaler Betrieb ermöglicht schnelle Antwortzeiten und die Möglichkeit, das Sys
 
 ## 🔧 Mögliche Erweiterungen & Verbesserungen
 
+- 🛠 **Docker-Compose-Profil für Ollama:** Ein zusätzlicher Profilmodus in der `docker-compose.yml`, der Ollama direkt in Docker installiert und automatisch die benötigten Images herunterlädt.
 - 🗂 **Chat-Kontext-History speichern:** Für eine kohärente und kontextbezogene Interaktion mit dem System.
 - 🎛 **Web-Interface für Einstellungen:** Anpassungen wie Priorisierung von Quellen oder Dateipfade über eine intuitive Benutzeroberfläche ermöglichen.
 - 📤 **In-Chat Datei-Upload:** Direkte Verarbeitung hochgeladener Dokumente mithilfe einer In-Memory-Datenbank.
