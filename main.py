@@ -112,16 +112,16 @@ def get_llm_response(query, history=None):
               "Für jedes Dokument, das du zur Erstellung der Antwort verwendest, gibst du die Quelle und Seite an."
 
               "Falls du auf Basis der Dokumente keine gute Antwort finden kannst, antworte exakt mit 'Ich kann diese Frage leider nicht beantworten'. Das ist sehr wichtig! Versuche nicht, die Frage nur schlecht oder ohne die Dokumente zu beantworten.\n\n"
-              "Sofern du jedoch relevante Informationen in den bereitgestellten Dokumenten findest, verwende auch alle relevanten Informationen und gebe diese in einer umfangreichen Antwort aus."
+              "Sofern du jedoch relevante Informationen in den bereitgestellten Dokumenten findest, verwende auch alle relevanten Informationen und gebe diese in einer umfangreichen Antwort aus.\n"
+               "Zitiere nicht nur Dokumente, sondern nutze sie auch, um eigene Antworten daraus zu bilden. Denke also nach und kombiniere logisch. Das ist unfassbar wichtig! Du sollst selbst nachdenken und das bereitgestellte Wissen sinnvoll nutzen. Quellen gibst du aber trotzdem an."
 
               "Hier ist eine beispielhafte Antwort, auf die Frage '" + request_template + "', an deren Struktur du dich orientieren sollst: \n" + response_template + "\n\n" 
               "Dir wurde folgende Frage gestellt: ") + query +
               "\n\n Du hast folgende Dokumente zur Verfügung, um eine Antwort zu geben. "
               "Gib dabei auch die Quelle und die Seite der von dir in der "
               "Antwort verwendeten Dokumente an.\n\n" + chunks + "\n\n"
-              "Verwende KEINESFALLS Wissen, welches nicht in den Dokumenten enthalten ist. "
-              "Alle von dir verwendeten Begriffe"
-              "müssen in den Dokumenten enthalten sein. Falls das nicht möglich ist, antworte exakt mit dem Satz 'Ich kann diese Frage leider nicht beantworten' "
+              "Treffe keinesfalls Aussagen, deren Inhalt nicht logisch aus den Dokumenten hervorgeht. "
+              "Falls das nicht möglich ist, antworte exakt mit dem Satz 'Ich kann diese Frage leider nicht beantworten' "
               )
 
     client = Client()
